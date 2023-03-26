@@ -1,12 +1,9 @@
 package com.goku.ghostify.nlp
 
-import com.goku.ghostify.common
-import com.goku.ghostify.common.{IndexedToken, Sentence, TokenPiece, TokenizedSentence, WordpieceTokenizedSentence}
+import com.goku.ghostify.common._
 import com.goku.ghostify.data.Annotation
-import com.goku.ghostify.util._
 import com.johnsnowlabs.ml.tensorflow.sign.{ModelSignatureConstants, ModelSignatureManager}
 import com.johnsnowlabs.ml.tensorflow.{TensorResources, TensorflowWrapper}
-import com.johnsnowlabs.nlp.ActivationFunction
 import org.tensorflow.ndarray.buffer.IntDataBuffer
 
 import scala.collection.JavaConverters._
@@ -62,7 +59,7 @@ class BertClassification(
             if (result.nonEmpty) result.head else IndexedToken("")
         }
       val wordpieceTokens = bertTokens.flatMap(token => encoder.encode(token)).take(maxSeqLength)
-      common.WordpieceTokenizedSentence(wordpieceTokens)
+      WordpieceTokenizedSentence(wordpieceTokens)
     }
   }
 
@@ -98,7 +95,7 @@ class BertClassification(
         }
       }
 
-      common.WordpieceTokenizedSentence(wordpieceTokens)
+      WordpieceTokenizedSentence(wordpieceTokens)
     }
   }
 
