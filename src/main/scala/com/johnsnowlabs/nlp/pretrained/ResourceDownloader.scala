@@ -18,27 +18,21 @@ package com.johnsnowlabs.nlp.pretrained
 
 import com.johnsnowlabs.client.aws.AWSGateway
 import com.johnsnowlabs.nlp.annotators._
-import com.johnsnowlabs.nlp.annotators.audio.{HubertForCTC, Wav2Vec2ForCTC}
 import com.johnsnowlabs.nlp.annotators.classifier.dl._
-import com.johnsnowlabs.nlp.annotators.coref.SpanBertCorefModel
 import com.johnsnowlabs.nlp.annotators.cv.{SwinForImageClassification, ViTForImageClassification}
-import com.johnsnowlabs.nlp.annotators.er.EntityRulerModel
 import com.johnsnowlabs.nlp.annotators.ld.dl.LanguageDetectorDL
-import com.johnsnowlabs.nlp.annotators.ner.crf.NerCrfModel
-import com.johnsnowlabs.nlp.annotators.ner.dl.{NerDLModel, ZeroShotNerModel}
+import com.johnsnowlabs.nlp.annotators.ner.dl.ZeroShotNerModel
 import com.johnsnowlabs.nlp.annotators.parser.dep.DependencyParserModel
 import com.johnsnowlabs.nlp.annotators.parser.typdep.TypedDependencyParserModel
 import com.johnsnowlabs.nlp.annotators.pos.perceptron.PerceptronModel
 import com.johnsnowlabs.nlp.annotators.sbd.pragmatic.SentenceDetector
 import com.johnsnowlabs.nlp.annotators.sda.pragmatic.SentimentDetectorModel
 import com.johnsnowlabs.nlp.annotators.sda.vivekn.ViveknSentimentModel
-import com.johnsnowlabs.nlp.annotators.sentence_detector_dl.SentenceDetectorDLModel
 import com.johnsnowlabs.nlp.annotators.seq2seq.{GPT2Transformer, MarianTransformer, T5Transformer}
 import com.johnsnowlabs.nlp.annotators.spell.context.ContextSpellCheckerModel
 import com.johnsnowlabs.nlp.annotators.spell.norvig.NorvigSweetingModel
 import com.johnsnowlabs.nlp.annotators.spell.symmetric.SymmetricDeleteModel
 import com.johnsnowlabs.nlp.annotators.ws.WordSegmenterModel
-import com.johnsnowlabs.nlp.embeddings._
 import com.johnsnowlabs.nlp.pretrained.ResourceType.ResourceType
 import com.johnsnowlabs.nlp.util.io.{OutputHelper, ResourceHelper}
 import com.johnsnowlabs.nlp.{DocumentAssembler, TableAssembler, pretrained}
@@ -635,43 +629,23 @@ object PythonResourceDownloader {
     "SentenceDetector" -> SentenceDetector,
     "TokenizerModel" -> TokenizerModel,
     "PerceptronModel" -> PerceptronModel,
-    "NerCrfModel" -> NerCrfModel,
     "Stemmer" -> Stemmer,
     "NormalizerModel" -> NormalizerModel,
     "RegexMatcherModel" -> RegexMatcherModel,
     "LemmatizerModel" -> LemmatizerModel,
     "DateMatcher" -> DateMatcher,
-    "TextMatcherModel" -> TextMatcherModel,
     "SentimentDetectorModel" -> SentimentDetectorModel,
     "ViveknSentimentModel" -> ViveknSentimentModel,
     "NorvigSweetingModel" -> NorvigSweetingModel,
     "SymmetricDeleteModel" -> SymmetricDeleteModel,
-    "NerDLModel" -> NerDLModel,
-    "WordEmbeddingsModel" -> WordEmbeddingsModel,
-    "BertEmbeddings" -> BertEmbeddings,
     "DependencyParserModel" -> DependencyParserModel,
     "TypedDependencyParserModel" -> TypedDependencyParserModel,
-    "UniversalSentenceEncoder" -> UniversalSentenceEncoder,
-    "ElmoEmbeddings" -> ElmoEmbeddings,
-    "ClassifierDLModel" -> ClassifierDLModel,
     "ContextSpellCheckerModel" -> ContextSpellCheckerModel,
-    "AlbertEmbeddings" -> AlbertEmbeddings,
-    "XlnetEmbeddings" -> XlnetEmbeddings,
-    "SentimentDLModel" -> SentimentDLModel,
     "LanguageDetectorDL" -> LanguageDetectorDL,
     "StopWordsCleaner" -> StopWordsCleaner,
-    "BertSentenceEmbeddings" -> BertSentenceEmbeddings,
-    "MultiClassifierDLModel" -> MultiClassifierDLModel,
-    "SentenceDetectorDLModel" -> SentenceDetectorDLModel,
     "T5Transformer" -> T5Transformer,
     "MarianTransformer" -> MarianTransformer,
     "WordSegmenterModel" -> WordSegmenterModel,
-    "DistilBertEmbeddings" -> DistilBertEmbeddings,
-    "RoBertaEmbeddings" -> RoBertaEmbeddings,
-    "XlmRoBertaEmbeddings" -> XlmRoBertaEmbeddings,
-    "LongformerEmbeddings" -> LongformerEmbeddings,
-    "RoBertaSentenceEmbeddings" -> RoBertaSentenceEmbeddings,
-    "XlmRoBertaSentenceEmbeddings" -> XlmRoBertaSentenceEmbeddings,
     "AlbertForTokenClassification" -> AlbertForTokenClassification,
     "BertForTokenClassification" -> BertForTokenClassification,
     "DeBertaForTokenClassification" -> DeBertaForTokenClassification,
@@ -689,13 +663,8 @@ object PythonResourceDownloader {
     "XlmRoBertaForSequenceClassification" -> XlmRoBertaForSequenceClassification,
     "XlnetForSequenceClassification" -> XlnetForSequenceClassification,
     "GPT2Transformer" -> GPT2Transformer,
-    "EntityRulerModel" -> EntityRulerModel,
-    "Doc2VecModel" -> Doc2VecModel,
-    "Word2VecModel" -> Word2VecModel,
-    "DeBertaEmbeddings" -> DeBertaEmbeddings,
     "DeBertaForSequenceClassification" -> DeBertaForSequenceClassification,
     "DeBertaForTokenClassification" -> DeBertaForTokenClassification,
-    "CamemBertEmbeddings" -> CamemBertEmbeddings,
     "AlbertForQuestionAnswering" -> AlbertForQuestionAnswering,
     "BertForQuestionAnswering" -> BertForQuestionAnswering,
     "DeBertaForQuestionAnswering" -> DeBertaForQuestionAnswering,
@@ -703,11 +672,8 @@ object PythonResourceDownloader {
     "LongformerForQuestionAnswering" -> LongformerForQuestionAnswering,
     "RoBertaForQuestionAnswering" -> RoBertaForQuestionAnswering,
     "XlmRoBertaForQuestionAnswering" -> XlmRoBertaForQuestionAnswering,
-    "SpanBertCorefModel" -> SpanBertCorefModel,
     "ViTForImageClassification" -> ViTForImageClassification,
     "SwinForImageClassification" -> SwinForImageClassification,
-    "Wav2Vec2ForCTC" -> Wav2Vec2ForCTC,
-    "HubertForCTC" -> HubertForCTC,
     "CamemBertForTokenClassification" -> CamemBertForTokenClassification,
     "TableAssembler" -> TableAssembler,
     "TapasForQuestionAnswering" -> TapasForQuestionAnswering,

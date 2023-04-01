@@ -2,7 +2,6 @@ package com.goku.ghostify.nlp
 
 import com.goku.ghostify.common.{IndexedToken, Sentence, TokenPiece, TokenizedSentence, WordpieceTokenizedSentence}
 import com.goku.ghostify.data.{Annotation, AnnotatorType}
-import com.goku.ghostify.util._
 import com.johnsnowlabs.nlp.ActivationFunction
 
 trait XXXForClassification {

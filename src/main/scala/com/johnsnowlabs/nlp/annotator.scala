@@ -17,39 +17,22 @@
 package com.johnsnowlabs.nlp
 
 import com.johnsnowlabs.ml.tensorflow.sentencepiece.ReadSentencePieceModel
-import com.johnsnowlabs.nlp.annotators.audio.{
-  ReadHubertForAudioDLModel,
-  ReadWav2Vec2ForAudioDLModel,
-  ReadablePretrainedHubertForAudioModel,
-  ReadablePretrainedWav2Vec2ForAudioModel
-}
-import com.johnsnowlabs.nlp.annotators.btm.ReadablePretrainedBigTextMatcher
 import com.johnsnowlabs.nlp.annotators.classifier.dl._
-import com.johnsnowlabs.nlp.annotators.coref.{
-  ReadSpanBertCorefTensorflowModel,
-  ReadablePretrainedSpanBertCorefModel
-}
 import com.johnsnowlabs.nlp.annotators.cv.{
   ReadSwinForImageDLModel,
   ReadViTForImageDLModel,
   ReadablePretrainedSwinForImageModel,
   ReadablePretrainedViTForImageModel
 }
-import com.johnsnowlabs.nlp.annotators.er.ReadablePretrainedEntityRuler
 import com.johnsnowlabs.nlp.annotators.ld.dl.{
   ReadLanguageDetectorDLTensorflowModel,
   ReadablePretrainedLanguageDetectorDLModel
 }
-import com.johnsnowlabs.nlp.annotators.ner.crf.ReadablePretrainedNerCrf
 import com.johnsnowlabs.nlp.annotators.ner.dl._
 import com.johnsnowlabs.nlp.annotators.parser.dep.ReadablePretrainedDependency
 import com.johnsnowlabs.nlp.annotators.parser.typdep.ReadablePretrainedTypedDependency
 import com.johnsnowlabs.nlp.annotators.pos.perceptron.ReadablePretrainedPerceptron
 import com.johnsnowlabs.nlp.annotators.sda.vivekn.ReadablePretrainedVivekn
-import com.johnsnowlabs.nlp.annotators.sentence_detector_dl.{
-  ReadablePretrainedSentenceDetectorDL,
-  ReadsSentenceDetectorDLGraph
-}
 import com.johnsnowlabs.nlp.annotators.seq2seq._
 import com.johnsnowlabs.nlp.annotators.spell.norvig.ReadablePretrainedNorvig
 import com.johnsnowlabs.nlp.annotators.spell.symmetric.ReadablePretrainedSymmetric
@@ -57,10 +40,8 @@ import com.johnsnowlabs.nlp.annotators.ws.ReadablePretrainedWordSegmenter
 import com.johnsnowlabs.nlp.annotators.{
   ReadablePretrainedLemmatizer,
   ReadablePretrainedStopWordsCleanerModel,
-  ReadablePretrainedTextMatcher,
   ReadablePretrainedTokenizer
 }
-import com.johnsnowlabs.nlp.embeddings._
 import org.apache.spark.ml.util.DefaultParamsReadable
 
 package object annotator {
@@ -109,22 +90,6 @@ package object annotator {
 
   object MultiDateMatcher extends DefaultParamsReadable[MultiDateMatcher]
 
-  type TextMatcher = com.johnsnowlabs.nlp.annotators.TextMatcher
-
-  object TextMatcher extends DefaultParamsReadable[TextMatcher]
-
-  type TextMatcherModel = com.johnsnowlabs.nlp.annotators.TextMatcherModel
-
-  object TextMatcherModel extends ReadablePretrainedTextMatcher
-
-  type BigTextMatcher = com.johnsnowlabs.nlp.annotators.btm.BigTextMatcher
-
-  object BigTextMatcher extends DefaultParamsReadable[BigTextMatcher]
-
-  type BigTextMatcherModel = com.johnsnowlabs.nlp.annotators.btm.BigTextMatcherModel
-
-  object BigTextMatcherModel extends ReadablePretrainedBigTextMatcher
-
   type RegexMatcher = com.johnsnowlabs.nlp.annotators.RegexMatcher
 
   object RegexMatcher extends DefaultParamsReadable[RegexMatcher]
@@ -159,13 +124,6 @@ package object annotator {
 
   object NGramGenerator extends DefaultParamsReadable[NGramGenerator]
 
-  type NerCrfApproach = com.johnsnowlabs.nlp.annotators.ner.crf.NerCrfApproach
-
-  object NerCrfApproach extends DefaultParamsReadable[NerCrfApproach]
-
-  type NerCrfModel = com.johnsnowlabs.nlp.annotators.ner.crf.NerCrfModel
-
-  object NerCrfModel extends ReadablePretrainedNerCrf
 
   type PerceptronApproach = com.johnsnowlabs.nlp.annotators.pos.perceptron.PerceptronApproach
 
@@ -221,14 +179,6 @@ package object annotator {
 
   object SymmetricDeleteModel extends ReadablePretrainedSymmetric
 
-  type NerDLApproach = com.johnsnowlabs.nlp.annotators.ner.dl.NerDLApproach
-
-  object NerDLApproach extends DefaultParamsReadable[NerDLApproach] with WithGraphResolver
-
-  type NerDLModel = com.johnsnowlabs.nlp.annotators.ner.dl.NerDLModel
-
-  object NerDLModel extends ReadablePretrainedNerDL with ReadsNERGraph
-
   type NerConverter = com.johnsnowlabs.nlp.annotators.ner.NerConverter
 
   object NerConverter extends ParamsAndFeaturesReadable[NerConverter]
@@ -253,65 +203,9 @@ package object annotator {
 
   object TypedDependencyParserModel extends ReadablePretrainedTypedDependency
 
-  type WordEmbeddings = com.johnsnowlabs.nlp.embeddings.WordEmbeddings
-
-  object WordEmbeddings extends DefaultParamsReadable[WordEmbeddings]
-
-  type WordEmbeddingsModel = com.johnsnowlabs.nlp.embeddings.WordEmbeddingsModel
-
-  object WordEmbeddingsModel extends ReadablePretrainedWordEmbeddings with EmbeddingsCoverage
-
-  type BertEmbeddings = com.johnsnowlabs.nlp.embeddings.BertEmbeddings
-
-  object BertEmbeddings extends ReadablePretrainedBertModel with ReadBertDLModel
-
-  type SentenceEmbeddings = com.johnsnowlabs.nlp.embeddings.SentenceEmbeddings
-
-  object SentenceEmbeddings extends DefaultParamsReadable[SentenceEmbeddings]
-
-  type ChunkEmbeddings = com.johnsnowlabs.nlp.embeddings.ChunkEmbeddings
-
-  object ChunkEmbeddings extends DefaultParamsReadable[ChunkEmbeddings]
-
   type NerOverwriter = com.johnsnowlabs.nlp.annotators.ner.NerOverwriter
 
   object NerOverwriter extends DefaultParamsReadable[NerOverwriter]
-
-  type UniversalSentenceEncoder = com.johnsnowlabs.nlp.embeddings.UniversalSentenceEncoder
-
-  object UniversalSentenceEncoder extends ReadablePretrainedUSEModel with ReadUSEDLModel
-
-  type ElmoEmbeddings = com.johnsnowlabs.nlp.embeddings.ElmoEmbeddings
-
-  object ElmoEmbeddings extends ReadablePretrainedElmoModel with ReadElmoDLModel
-
-  type ClassifierDLApproach = com.johnsnowlabs.nlp.annotators.classifier.dl.ClassifierDLApproach
-
-  object ClassifierDLApproach extends DefaultParamsReadable[ClassifierDLApproach]
-
-  type ClassifierDLModel = com.johnsnowlabs.nlp.annotators.classifier.dl.ClassifierDLModel
-
-  object ClassifierDLModel
-      extends ReadablePretrainedClassifierDL
-      with ReadClassifierDLTensorflowModel
-
-  type AlbertEmbeddings = com.johnsnowlabs.nlp.embeddings.AlbertEmbeddings
-
-  object AlbertEmbeddings extends ReadablePretrainedAlbertModel with ReadAlbertDLModel
-
-  type XlnetEmbeddings = com.johnsnowlabs.nlp.embeddings.XlnetEmbeddings
-
-  object XlnetEmbeddings extends ReadablePretrainedXlnetModel with ReadXlnetDLModel
-
-  type SentimentDLApproach = com.johnsnowlabs.nlp.annotators.classifier.dl.SentimentDLApproach
-
-  object SentimentDLApproach extends DefaultParamsReadable[SentimentDLApproach]
-
-  type SentimentDLModel = com.johnsnowlabs.nlp.annotators.classifier.dl.SentimentDLModel
-
-  object SentimentDLModel
-      extends ReadablePretrainedSentimentDL
-      with ReadSentimentDLTensorflowModel
 
   type YakeKeywordExtraction = com.johnsnowlabs.nlp.annotators.keyword.yake.YakeKeywordExtraction
 
@@ -322,36 +216,6 @@ package object annotator {
   object LanguageDetectorDL
       extends ReadablePretrainedLanguageDetectorDLModel
       with ReadLanguageDetectorDLTensorflowModel
-
-  type BertSentenceEmbeddings = com.johnsnowlabs.nlp.embeddings.BertSentenceEmbeddings
-
-  object BertSentenceEmbeddings
-      extends ReadablePretrainedBertSentenceModel
-      with ReadBertSentenceDLModel
-
-  type MultiClassifierDLApproach =
-    com.johnsnowlabs.nlp.annotators.classifier.dl.MultiClassifierDLApproach
-
-  object MultiClassifierDLApproach extends DefaultParamsReadable[MultiClassifierDLApproach]
-
-  type MultiClassifierDLModel =
-    com.johnsnowlabs.nlp.annotators.classifier.dl.MultiClassifierDLModel
-
-  object MultiClassifierDLModel
-      extends ReadablePretrainedMultiClassifierDL
-      with ReadMultiClassifierDLTensorflowModel
-
-  type SentenceDetectorDLApproach =
-    com.johnsnowlabs.nlp.annotators.sentence_detector_dl.SentenceDetectorDLApproach
-
-  object SentenceDetectorDLApproach extends DefaultParamsReadable[SentenceDetectorDLApproach]
-
-  type SentenceDetectorDLModel =
-    com.johnsnowlabs.nlp.annotators.sentence_detector_dl.SentenceDetectorDLModel
-
-  object SentenceDetectorDLModel
-      extends ReadsSentenceDetectorDLGraph
-      with ReadablePretrainedSentenceDetectorDL
 
   type WordSegmenterApproach = com.johnsnowlabs.nlp.annotators.ws.WordSegmenterApproach
 
@@ -379,18 +243,6 @@ package object annotator {
       with ReadT5TransformerDLModel
       with ReadSentencePieceModel
 
-  type DistilBertEmbeddings = com.johnsnowlabs.nlp.embeddings.DistilBertEmbeddings
-
-  object DistilBertEmbeddings extends ReadablePretrainedDistilBertModel with ReadDistilBertDLModel
-
-  type RoBertaEmbeddings = com.johnsnowlabs.nlp.embeddings.RoBertaEmbeddings
-
-  object RoBertaEmbeddings extends ReadablePretrainedRobertaModel with ReadRobertaDLModel
-
-  type XlmRoBertaEmbeddings = com.johnsnowlabs.nlp.embeddings.XlmRoBertaEmbeddings
-
-  object XlmRoBertaEmbeddings extends ReadablePretrainedXlmRobertaModel with ReadXlmRobertaDLModel
-
   type BertForTokenClassification =
     com.johnsnowlabs.nlp.annotators.classifier.dl.BertForTokenClassification
 
@@ -404,22 +256,6 @@ package object annotator {
   object DistilBertForTokenClassification
       extends ReadablePretrainedDistilBertForTokenModel
       with ReadDistilBertForTokenDLModel
-
-  type LongformerEmbeddings = com.johnsnowlabs.nlp.embeddings.LongformerEmbeddings
-
-  object LongformerEmbeddings extends ReadablePretrainedLongformerModel with ReadLongformerDLModel
-
-  type RoBertaSentenceEmbeddings = com.johnsnowlabs.nlp.embeddings.RoBertaSentenceEmbeddings
-
-  object RoBertaSentenceEmbeddings
-      extends ReadablePretrainedRobertaSentenceModel
-      with ReadRobertaSentenceDLModel
-
-  type XlmRoBertaSentenceEmbeddings = com.johnsnowlabs.nlp.embeddings.XlmRoBertaSentenceEmbeddings
-
-  object XlmRoBertaSentenceEmbeddings
-      extends ReadablePretrainedXlmRobertaSentenceModel
-      with ReadXlmRobertaSentenceDLModel
 
   type RoBertaForTokenClassification =
     com.johnsnowlabs.nlp.annotators.classifier.dl.RoBertaForTokenClassification
@@ -456,11 +292,6 @@ package object annotator {
       extends ReadablePretrainedLongformerForTokenModel
       with ReadLongformerForTokenDLModel
 
-  type EntityRulerApproach = com.johnsnowlabs.nlp.annotators.er.EntityRulerApproach
-
-  type EntityRulerModel = com.johnsnowlabs.nlp.annotators.er.EntityRulerModel
-
-  object EntityRulerModel extends ReadablePretrainedEntityRuler
 
   type BertForSequenceClassification =
     com.johnsnowlabs.nlp.annotators.classifier.dl.BertForSequenceClassification
@@ -468,14 +299,6 @@ package object annotator {
   object BertForSequenceClassification
       extends ReadablePretrainedBertForSequenceModel
       with ReadBertForSequenceDLModel
-
-  type Doc2VecApproach = com.johnsnowlabs.nlp.embeddings.Doc2VecApproach
-
-  object Doc2VecApproach extends DefaultParamsReadable[Doc2VecApproach]
-
-  type Doc2VecModel = com.johnsnowlabs.nlp.embeddings.Doc2VecModel
-
-  object Doc2VecModel extends ReadablePretrainedDoc2Vec
 
   type DistilBertForSequenceClassification =
     com.johnsnowlabs.nlp.annotators.classifier.dl.DistilBertForSequenceClassification
@@ -525,18 +348,6 @@ package object annotator {
       extends ReadablePretrainedGPT2TransformerModel
       with ReadGPT2TransformerDLModel
 
-  type Word2VecApproach = com.johnsnowlabs.nlp.embeddings.Word2VecApproach
-
-  object Word2VecApproach extends DefaultParamsReadable[Word2VecApproach]
-
-  type Word2VecModel = com.johnsnowlabs.nlp.embeddings.Word2VecModel
-
-  object Word2VecModel extends ReadablePretrainedWord2Vec
-
-  type DeBertaEmbeddings = com.johnsnowlabs.nlp.embeddings.DeBertaEmbeddings
-
-  object DeBertaEmbeddings extends ReadablePretrainedDeBertaModel with ReadDeBertaDLModel
-
   type DeBertaForSequenceClassification =
     com.johnsnowlabs.nlp.annotators.classifier.dl.DeBertaForSequenceClassification
 
@@ -550,16 +361,6 @@ package object annotator {
   object DeBertaForTokenClassification
       extends ReadablePretrainedDeBertaForTokenModel
       with ReadDeBertaForTokenDLModel
-
-  type CamemBertEmbeddings = com.johnsnowlabs.nlp.embeddings.CamemBertEmbeddings
-
-  object CamemBertEmbeddings extends ReadablePretrainedCamemBertModel with ReadCamemBertDLModel
-
-  type SpanBertCorefModel = com.johnsnowlabs.nlp.annotators.coref.SpanBertCorefModel
-
-  object SpanBertCorefModel
-      extends ReadablePretrainedSpanBertCorefModel
-      with ReadSpanBertCorefTensorflowModel
 
   type BertForQuestionAnswering =
     com.johnsnowlabs.nlp.annotators.classifier.dl.BertForQuestionAnswering
@@ -651,18 +452,6 @@ package object annotator {
   object CamemBertForQuestionAnswering
       extends ReadablePretrainedCamemBertForQAModel
       with ReadCamemBertForQADLModel
-
-  type Wav2Vec2ForCTC =
-    com.johnsnowlabs.nlp.annotators.audio.Wav2Vec2ForCTC
-
-  object Wav2Vec2ForCTC
-      extends ReadablePretrainedWav2Vec2ForAudioModel
-      with ReadWav2Vec2ForAudioDLModel
-
-  type HubertForCTC =
-    com.johnsnowlabs.nlp.annotators.audio.HubertForCTC
-
-  object HubertForCTC extends ReadablePretrainedHubertForAudioModel with ReadHubertForAudioDLModel
 
   type ZeroShotNerModel =
     com.johnsnowlabs.nlp.annotators.ner.dl.ZeroShotNerModel

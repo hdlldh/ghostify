@@ -66,7 +66,7 @@ lazy val root = (project in file(".")).
       sparkSqlArtifact,
       sparkMlArtifact,
 //      scalaNlpArtifact
-       rocksdbjni,
+//       rocksdbjni,
        awsSdkS3,
        liblevenshtein
          exclude("com.google.guava", "guava")

@@ -16,7 +16,6 @@
 
 package com.johnsnowlabs.nlp
 
-import com.johnsnowlabs.storage.HasStorage
 import org.apache.spark.ml.param.ParamMap
 import org.apache.spark.ml.util.DefaultParamsWritable
 import org.apache.spark.ml.{Estimator, Model, PipelineModel}
@@ -55,17 +54,9 @@ abstract class AnnotatorApproach[M <: Model[M]]
     }
   }
 
-  private def indexIfStorage(dataset: Dataset[_]): Unit = {
-    this match {
-      case withStorage: HasStorage =>
-        withStorage.indexStorage(dataset, withStorage.getStoragePath)
-      case _ =>
-    }
-  }
 
   protected def _fit(dataset: Dataset[_], recursiveStages: Option[PipelineModel]): M = {
     beforeTraining(dataset.sparkSession)
-    indexIfStorage(dataset)
     val model = copyValues(train(dataset, recursiveStages).setParent(this))
     onTrained(model, dataset.sparkSession)
     model
