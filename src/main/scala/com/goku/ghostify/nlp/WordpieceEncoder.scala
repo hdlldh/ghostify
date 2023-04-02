@@ -1,8 +1,8 @@
 package com.goku.ghostify.nlp
 
-
 import com.goku.ghostify.common.{IndexedToken, TokenPiece}
 
+import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
 
 class WordpieceEncoder(
@@ -18,20 +18,64 @@ class WordpieceEncoder(
     val unkId = vocabulary(unkToken)
 
     if (token.token.length > maxInputCharsPerWord)
-      return Array(
+      Array(
         TokenPiece(unkToken, token.token, unkId, isWordStart = true, token.begin, token.end)
       )
+    else {
+      val result = ArrayBuffer[TokenPiece]()
+      findTokenPiece(0, token.token.length, token, unkId, result)
+      result.toArray
+    }
 
-    val result = ArrayBuffer[TokenPiece]()
+//    val result = ArrayBuffer[TokenPiece]()
+//
+//    val text = token.token
+//    var start = 0
+//    var end = text.length
+//
+//    // Greedy search for next largest substring
+//    while (end > start && start < text.length) {
+//      val toFind = (if (start > 0) partPrefix else "") + text.substring(start, end)
+//
+//      val found = vocabulary.get(toFind)
+//      if (found.nonEmpty) {
+//        val subToken = TokenPiece(
+//          toFind,
+//          token.token,
+//          found.get,
+//          start == 0,
+//          token.begin + start,
+//          token.begin + end - 1
+//        )
+//        result.append(subToken)
+//        start = end
+//        end = text.length
+//      } else {
+//        end = end - 1
+//
+//        if (end == start) {
+//          // Not Found anything in vocabulary
+//          return Array(
+//            TokenPiece(unkToken, token.token, unkId, isWordStart = true, token.begin, token.end)
+//          )
+//        }
+//      }
+//    }
+//
+//    result.toArray
+  }
 
-    val text = token.token
-    var start = 0
-    var end = text.length
-
-    // Greedy search for next largest substring
-    while (end > start && start < text.length) {
-      val toFind = (if (start > 0) partPrefix else "") + text.substring(start, end)
-
+  @tailrec
+  private def findTokenPiece(
+    start: Int,
+    end: Int,
+    token: IndexedToken,
+    unkId: Int,
+    result: ArrayBuffer[TokenPiece]
+  ): Array[TokenPiece] = {
+    if (end <= start || start >= token.token.length) result.toArray
+    else {
+      val toFind = (if (start > 0) partPrefix else "") + token.token.substring(start, end)
       val found = vocabulary.get(toFind)
       if (found.nonEmpty) {
         val subToken = TokenPiece(
@@ -43,20 +87,12 @@ class WordpieceEncoder(
           token.begin + end - 1
         )
         result.append(subToken)
-        start = end
-        end = text.length
+        findTokenPiece(end, token.token.length, token, unkId, result)
       } else {
-        end = end - 1
-
-        if (end == start) {
-          // Not Found anything in vocabulary
-          return Array(
-            TokenPiece(unkToken, token.token, unkId, isWordStart = true, token.begin, token.end)
-          )
-        }
+        if (end - 1 == start)
+          result.append(TokenPiece(unkToken, token.token, unkId, isWordStart = true, token.begin, token.end))
+        findTokenPiece(start, end - 1, token, unkId, result)
       }
     }
-
-    result.toArray
   }
 }
