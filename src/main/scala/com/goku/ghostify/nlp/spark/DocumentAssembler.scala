@@ -18,9 +18,17 @@ class DocumentAssembler(override val uid: String)
     else Seq(Annotation(DOCUMENT, 0, _text.length - 1, _text, Map("sentence" -> "0")))
   }
 
+  override protected def validateInputType(inputType: DataType): Unit = require(inputType == StringType)
+
   override protected def outputDataType: DataType = ArrayType(Annotation.dataType)
 
   override final def transformSchema(schema: StructType): StructType = {
+    val inputType = schema($(inputCol)).dataType
+    validateInputType(inputType)
+    if (schema.fieldNames.contains($(outputCol))) {
+      throw new IllegalArgumentException(s"Output column ${$(outputCol)} already exists.")
+    }
+
     val metadataBuilder: MetadataBuilder = new MetadataBuilder()
     metadataBuilder.putString("annotatorType", DOCUMENT)
     val outputFields = schema.fields :+
