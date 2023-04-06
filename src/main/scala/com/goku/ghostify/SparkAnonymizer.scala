@@ -2,13 +2,13 @@ package com.goku.ghostify
 
 import com.goku.ghostify.util.{NerResults, Params}
 //import com.johnsnowlabs.nlp.DocumentAssembler
-import com.johnsnowlabs.nlp.annotator.{Tokenizer, BertForTokenClassification, NerConverter, SentenceDetector}
+import com.johnsnowlabs.nlp.annotator.{Tokenizer, BertForTokenClassification, NerConverter}
 import org.apache.spark.ml.{Pipeline, PipelineStage}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 
 import com.goku.ghostify.nlp.spark.DocumentAssembler
-//import com.goku.ghostify.nlp.spark.SentenceDetector
+import com.goku.ghostify.nlp.spark.SentenceDetector
 
 
 object SparkAnonymizer {
@@ -64,7 +64,7 @@ object SparkAnonymizer {
 
     val ner = BertForTokenClassification
         .loadSavedModel(Params.ModelPath, ss)
-        .setInputCols(sentenceDetector.getOutputCol, token.getOutputCol)
+        .setInputCols(document.getOutputCol, token.getOutputCol)
         .setOutputCol("ner")
         .setCaseSensitive(true)
         .setMaxSentenceLength(128)

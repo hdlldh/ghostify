@@ -1,4 +1,4 @@
-package com.goku.ghostify.nlp
+package com.goku.ghostify.util
 
 import com.johnsnowlabs.nlp.annotators.common.Sentence
 import org.scalatest.wordspec.AnyWordSpec

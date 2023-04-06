@@ -18,7 +18,8 @@ class DocumentAssembler(override val uid: String)
     else Seq(Annotation(DOCUMENT, 0, _text.length - 1, _text, Map("sentence" -> "0")))
   }
 
-  override protected def validateInputType(inputType: DataType): Unit = require(inputType == StringType)
+  override protected def validateInputType(inputType: DataType): Unit =
+    require(inputType == StringType)
 
   override protected def outputDataType: DataType = ArrayType(Annotation.dataType)
 
