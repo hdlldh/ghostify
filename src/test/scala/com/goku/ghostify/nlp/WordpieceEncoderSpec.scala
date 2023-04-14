@@ -1,7 +1,6 @@
 package com.goku.ghostify.nlp
 
-import com.goku.ghostify.common.IndexedToken
-import com.johnsnowlabs.nlp.annotators.common.TokenPiece
+import com.goku.ghostify.common.{IndexedToken, TokenPiece}
 import org.scalatest.wordspec.AnyWordSpec
 
 class WordpieceEncoderSpec extends AnyWordSpec {
@@ -18,16 +17,14 @@ class WordpieceEncoderSpec extends AnyWordSpec {
         TokenPiece("##c", "abc", 3, false, 2, 2)
       )
       assert(encoded.length === expected.length)
-      encoded.zip(expected).foreach { case (en, ex) => en === ex }
+      encoded.zip(expected).foreach { case (en, ex) => assert(en === ex) }
     }
 
     "encode non-existing word correctly" in {
       val encoded = wordpieceEncoder.encode(IndexedToken("bca", 3, 5))
       val expected = Array(TokenPiece("[UNK]", "bca", 0, true, 3, 5))
       assert(encoded.length === expected.length)
-      encoded.zip(expected).foreach { case (en, ex) => en === ex }
+      encoded.zip(expected).foreach { case (en, ex) => assert(en === ex) }
     }
-
   }
-
 }

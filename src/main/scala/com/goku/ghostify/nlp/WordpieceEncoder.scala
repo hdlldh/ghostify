@@ -1,16 +1,17 @@
 package com.goku.ghostify.nlp
 
-import com.goku.ghostify.common.{IndexedToken, TokenPiece}
-
 import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
 
+import com.goku.ghostify.common.{IndexedToken, TokenPiece}
+
+// Refer to the implementation in `com.johnsnowlabs.nlp.annotators.tokenizer.wordpiece.WordpieceEncoder`
 class WordpieceEncoder(
   vocabulary: Map[String, Int],
   unkToken: String = "[UNK]",
   maxInputCharsPerWord: Int = 200,
   partPrefix: String = "##"
-) {
+) extends Serializable {
 
   require(vocabulary.contains(unkToken), "token " + unkToken + " not found in vocabulary")
 
@@ -27,42 +28,6 @@ class WordpieceEncoder(
       result.toArray
     }
 
-//    val result = ArrayBuffer[TokenPiece]()
-//
-//    val text = token.token
-//    var start = 0
-//    var end = text.length
-//
-//    // Greedy search for next largest substring
-//    while (end > start && start < text.length) {
-//      val toFind = (if (start > 0) partPrefix else "") + text.substring(start, end)
-//
-//      val found = vocabulary.get(toFind)
-//      if (found.nonEmpty) {
-//        val subToken = TokenPiece(
-//          toFind,
-//          token.token,
-//          found.get,
-//          start == 0,
-//          token.begin + start,
-//          token.begin + end - 1
-//        )
-//        result.append(subToken)
-//        start = end
-//        end = text.length
-//      } else {
-//        end = end - 1
-//
-//        if (end == start) {
-//          // Not Found anything in vocabulary
-//          return Array(
-//            TokenPiece(unkToken, token.token, unkId, isWordStart = true, token.begin, token.end)
-//          )
-//        }
-//      }
-//    }
-//
-//    result.toArray
   }
 
   @tailrec
@@ -90,7 +55,9 @@ class WordpieceEncoder(
         findTokenPiece(end, token.token.length, token, unkId, result)
       } else {
         if (end - 1 == start)
-          result.append(TokenPiece(unkToken, token.token, unkId, isWordStart = true, token.begin, token.end))
+          result.append(
+            TokenPiece(unkToken, token.token, unkId, isWordStart = true, token.begin, token.end)
+          )
         findTokenPiece(start, end - 1, token, unkId, result)
       }
     }
